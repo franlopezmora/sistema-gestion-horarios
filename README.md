@@ -100,7 +100,7 @@ La solución está dividida en **backend** (Java + Spring Boot + JPA) y **fronte
 ## 🌿 Estructura de ramas
 
 - **main**: rama estable, sólo merges vía PR tras pasar CI y revisión.
-- **dev**: integración de features, también protegida.
+- **dev**: integración de features, también protegida. 
 - **feature/**: nuevas funcionalidades, parten de `dev`.
 - **bugfix/**: correcciones, parten de `dev`.
 
