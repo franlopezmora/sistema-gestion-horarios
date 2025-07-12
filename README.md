@@ -3,8 +3,8 @@
 > Aplicación web para que alumnos armen y gestionen su cronograma de cursado, seleccionando materias y comisiones sin solapamientos.
 
 ---
-
-## 📝 Descripción
+ 
+## 📝 Descripción 
 
 Este proyecto permite a los estudiantes:
 
