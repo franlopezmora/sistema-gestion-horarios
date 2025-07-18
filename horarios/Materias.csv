@@ -1,0 +1,56 @@
+id_materia;código;nombre;anio_carrera;electiva
+1;AED;Algoritmos y Estructuras de Datos;1;false
+2;AM1;Análisis Matemático I;1;false
+3;ACO;Arquitectura de Computadoras;1;false
+4;F1;Física I;1;false
+5;IS;Ingeniería y Sociedad;1;false
+6;I1;Inglés I;1;false
+7;LED;Lógica y Estructuras Discretas;1;false
+8;SPN;Sistemas y Procesos de Negocio;1;false
+9;AGA;Álgebra y Geometría Analítica;1;false
+10;SSL;Sintaxis y Semántica de los Lenguajes;2;false
+11;AM2;Análisis Matematico 2;2;false
+12;PYE;Probabilidad y Estadística;2;false
+13;SOP;Sistemas Operativos;2;false
+14;ASI;Análisis de Sistemas de Información;2;false
+15;F2;Física II;2;false
+16;PPR;Paradigmas de Programación;2;false
+17;DSI;Diseño de Sistemas de Información;3;false
+18;COM;Comunicación de Datos;3;false
+19;BDD;Base de Datos;3;false
+20;I2;Inglés II;3;false
+21;DDS;Desarrollo de Software;3;false
+22;AN;Análisis Numérico;3;false
+23;ECO;Economía;3;false
+24;BDA;Backend de Aplicaciones;3;true
+25;SEM;Seminario Integrador;3;true
+26;AS;Administración de Sistemas de Información;4;false
+27;RED;Redes de Datos;4;false
+28;IOP;Investigación Operativa;4;false
+29;GMP;Gestión de la Mejora de Procesos;4;true
+30;GI;Gestión Industrial de la Producción;4;true
+31;GS;Green Software;4;true
+32;SIM;Simulación;4;false
+33;TA;Tecnologías para la automatización;4;false
+34;DAO;Desarrollo de Aplicaciones con Objetos;4;true
+35;ICW;Ingeniería y Calidad de Software;4;false
+36;LEG;Legislación;4;false
+37;DO;Desarrollo y Operaciones DevOps;4;true
+38;CM;Comunicación Multimedial en el Desarrollo de SI;4;true
+39;IA;Inteligencia Artificial;5;false
+40;GG;Gestión Gerencial;5;false
+41;SG;Sistemas de Gestión;5;false
+42;DEC;Decisiones en Escenarios Complejos;5;true
+43;GE;Gerenciamiento Estratégico;5;true
+44;HB;Habilidades Blandas;5;true
+45;EMP;Emprendimientos Tecnológicos;5;true
+46;CII;Creatividad e Innovación en Ingeniería;5;true
+47;CON;Consultoria en Negocios Digitales;5;true
+48;PF;Proyecto Final;5;false
+49;SSI;Seguridad en los Sistemas de Información;5;false
+50;SA;Ingeniería de Software de Fuentes Abiertas-Libre;5;true
+51;CDD;Ciencia de Datos;5;false
+52;SDS;Seguridad en el Desarrollo de Software;5;true
+53;TSO;Testing de Software;5;true
+54;DTB;Desarrollo con Tecnologías Blockchain;5;true
+55;IAW;Integración de Aplicaciones en Entorno Web;5;true
