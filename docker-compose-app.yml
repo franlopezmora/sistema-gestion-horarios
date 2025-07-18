@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./backend/cruma
+      dockerfile: Dockerfile
+    container_name: cruma-app
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    environment:
+      SPRING_DATASOURCE_URL:    jdbc:postgresql://talented-improvements.with.playit.plus:1886/horarios_cursado?sslmode=disable
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+
+networks:
+  backend:
+    driver: bridge
