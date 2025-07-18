@@ -1,17 +1,13 @@
-# Etapa 1: compila la aplicación
-FROM maven:3.8.7-eclipse-temurin-17 AS builder
+# 1) Builder con Maven
+FROM maven:3.9.3-eclipse-temurin-17 AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Etapa 2: crea la imagen de ejecución
-FROM eclipse-temurin:17-jre
+# 2) Runtime con solo JRE
+FROM eclipse-temurin:24-jre
 WORKDIR /app
-COPY --from=builder /app/target/cruma-0.0.1-SNAPSHOT.jar app.jar
-
-# Expone el puerto que usa Spring Boot
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Arranca la app
 ENTRYPOINT ["java","-jar","app.jar"]
