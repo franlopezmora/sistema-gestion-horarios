@@ -1,0 +1,74 @@
+# ==== Sistema operativo ====
+.DS_Store
+Thumbs.db
+
+# ==== IDEs / editores ====
+# IntelliJ IDEA
+/.idea/
+/*.iml
+/out/
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+/.apt_generated/
+/.factorypath
+
+# VS Code
+/.vscode/
+
+# ==== Java / Maven ====
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Maven build output
+/target/
+/release/
+
+# Spring Boot properties backup
+**/application-*.properties
+
+# Hibernate / JPA schema files
+*.hbm.xml
+
+# IntelliJ run configs
+*.ipr
+*.iws
+
+# ==== Gradle (por si acaso) ====
+/build/
+/.gradle/
+/gradle-wrapper.jar
+!gradle-wrapper.jar
+
+# ==== Docker ====
+# Compose overrides, volúmenes temporales
+docker-compose.override.yml
+
+# ==== Node / React frontend ====
+# Node modules
+/frontend/node_modules/
+# Build output
+/frontend/build/
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==== Variables de entorno ====
+.env
+.env.local
+.env.*.local
+
+# ==== Cobertura / reports ====
+/coverage/
+/jacoco.exec
