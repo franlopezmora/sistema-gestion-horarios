@@ -1,4 +1,4 @@
-id_materia;codigo;nombre;anio_carrera;electiva
+id_materia;código;nombre;anio_carrera;electiva
 1;AED;Algoritmos y Estructuras de Datos;1;false
 2;AM1;Analisis Matematico I;1;false
 3;ACO;Arquitectura de Computadoras;1;false
