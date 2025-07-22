@@ -42,4 +42,16 @@ public interface ComisionMateriaRepository extends JpaRepository<ComisionMateria
             @Param("carreraId") Integer carreraId,
             @Param("periodoId") Integer periodoId
     );
+
+    @Query("""
+      SELECT cm
+      FROM ComisionMateria cm
+      JOIN FETCH cm.comision c
+      JOIN FETCH c.carrera
+      JOIN FETCH cm.periodo
+      LEFT JOIN FETCH cm.comisionMateriaHorarios cmh
+      LEFT JOIN FETCH cmh.horario
+      WHERE cm.materia.id = :materiaId
+    """)
+    List<ComisionMateria> findByMateriaIdWithAll(@Param("materiaId") Integer materiaId);
 }
