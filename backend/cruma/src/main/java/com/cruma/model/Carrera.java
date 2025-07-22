@@ -2,6 +2,9 @@ package com.cruma.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "carrera")
@@ -16,4 +19,7 @@ public class Carrera {
 
     @Column(length = 255, nullable = false)
     private String nombre;
+
+    @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comision> comisiones;
 }

@@ -3,11 +3,11 @@ package com.cruma.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "materia")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 public class Materia {
 
     @Id
@@ -25,4 +25,7 @@ public class Materia {
 
     @Column(nullable = false)
     private Boolean electiva;
+
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ComisionMateria> comisionMaterias;
 }

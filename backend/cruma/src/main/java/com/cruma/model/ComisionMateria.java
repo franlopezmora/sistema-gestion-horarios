@@ -1,19 +1,33 @@
 package com.cruma.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "comision_materia")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ComisionMateria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    // (Podrás completar en detalle más adelante: comision, materia, periodo, horarios…)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comision_id", nullable = false)
+    private Comision comision;
 
-    public ComisionMateria() {}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "materia_id", nullable = false)
+    private Materia materia;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "periodo_id", nullable = false)
+    private Periodo periodo;
+
+    @OneToMany(mappedBy = "comisionMateria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ComisionMateriaHorario> comisionMateriaHorarios;
 }
