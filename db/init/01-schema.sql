@@ -1,3 +1,9 @@
+CREATE TYPE detalle_estado_enum AS ENUM (
+    'SELECCIONABLE',
+    'SELECCIONADO',
+    'SUPERPUESTO'
+);
+
 create table periodo
 (
     id          serial
@@ -6,7 +12,6 @@ create table periodo
         unique,
     descripcion varchar(255) not null
 );
-
 
 create table materia
 (
@@ -18,7 +23,6 @@ create table materia
     anio_carrera smallint              not null,
     electiva     boolean default false not null
 );
-
 
 create index idx_materia_electiva
     on materia (electiva);
@@ -32,7 +36,6 @@ create table carrera
     nombre varchar(255) not null
 );
 
-
 create table comision
 (
     id         serial
@@ -44,7 +47,6 @@ create table comision
         unique (carrera_id, seccion)
 );
 
-
 create index idx_comision_carrera
     on comision (carrera_id);
 
@@ -54,9 +56,9 @@ create table horario
         primary key,
     dia_semana  varchar(9) not null,
     hora_inicio time       not null,
-    hora_fin    time       not null
+    hora_fin    time       not null,
+    CONSTRAINT chk_hora CHECK (hora_inicio < hora_fin)
 );
-
 
 create table comision_materia
 (
@@ -88,7 +90,6 @@ create table comision_materia_horario
         references horario,
     unique (comision_materia_id, horario_id)
 );
-
 
 create index idx_cmh_cm
     on comision_materia_horario (comision_materia_id);
@@ -125,7 +126,7 @@ create table detalle_cronograma
         primary key,
     cronograma_id       integer                                            not null
         references cronograma,
-    estado              varchar(20) default 'PENDIENTE'::character varying not null,
+    estado detalle_estado_enum NOT NULL DEFAULT 'SELECCIONABLE',
     comision_materia_id integer                                            not null
         references comision_materia
 );
