@@ -18,7 +18,18 @@ public class MateriaController {
     }
 
     @GetMapping
-    public List<MateriaDTO> getAll() {
-        return service.listar();
+    public List<MateriaDTO> getMaterias(
+            @RequestParam(value = "carreraId", required = false) Integer carreraId) {
+        if (carreraId != null) {
+            return service.listarPorCarreraId(carreraId);
+        }
+        return service.listarTodas();
+    }
+
+    @GetMapping("/filtrar")
+    public List<MateriaDTO> filtrarPorCarreraYPeriodo(
+            @RequestParam Integer carreraId,
+            @RequestParam Integer periodoId) {
+        return service.listarPorCarreraYPeriodo(carreraId, periodoId);
     }
 }
