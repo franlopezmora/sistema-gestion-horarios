@@ -2,7 +2,18 @@ import React from 'react'
 import './ScheduleGrid.css'
 
 const days  = ['lunes','martes','miércoles','jueves','viernes','sábado']
-const hours = Array.from({ length: 16 }, (_, i) => 8 + i)
+const startHour = 8
+const endHour = 23
+const stepMinutes = 5
+
+const hours = []
+for (let h = startHour; h <= endHour; h++) {
+  for (let m = 0; m < 60; m += stepMinutes) {
+    // cortar en 23:05
+    if (h === 23 && m > 5) break
+    hours.push(`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`)
+  }
+}
 
 export default function ScheduleGrid({
   fixedBlocks = [],
@@ -11,11 +22,21 @@ export default function ScheduleGrid({
 }) {
     const HEADER_H = 40;
     const TIME_W = 60;
-    const hours = Array.from({ length: 16 }, (_, i) => 8 + i);
+    const startHour = 8
+    const endHour = 23
+    const stepMinutes = 5
+
+    const timeSlots = []
+    for (let h = startHour; h <= endHour; h++) {
+      for (let m = 0; m < 60; m += stepMinutes) {
+        // opcional: cortar en 23:05
+        if (h === 23 && m > 5) break
+        timeSlots.push(`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`)
+      }
+    }
 
     // calcula altura dinámica para que entre todo
-    const availableHeight = window.innerHeight - 150; // ajustá este margen según tu layout
-    const ROW_H = availableHeight / hours.length;
+    const ROW_H = 5
     const COL_W = `calc((100% - ${TIME_W}px)/6)`;
 
   return (
@@ -34,13 +55,13 @@ export default function ScheduleGrid({
 
 
       <div className="grid body">
-        {hours.map(h => (
-          <React.Fragment key={h}>
+        {timeSlots.map(t => (
+          <React.Fragment key={t}>
             <div className="cell time-label" style={{ width: TIME_W, height: ROW_H }}>
-              {h}:00
+              {t.endsWith(':00') ? t : ''} {/* mostramos solo las horas completas */}
             </div>
             {days.map(d => (
-              <div key={`${d}-${h}`} className="cell slot" />
+              <div key={`${d}-${t}`} className="cell slot" />
             ))}
           </React.Fragment>
         ))}
@@ -51,8 +72,10 @@ export default function ScheduleGrid({
         {fixedBlocks.map((blk,i) => {
           const [hs, hm] = blk.horaEntrada.split(':').map(Number)
           const [he, em] = blk.horaSalida.split(':').map(Number)
-          const top    = (hs-8)*ROW_H+HEADER_H
-          const height = ((he*60+em)-(hs*60+hm))/60*ROW_H
+          const minutesFromStart = (h, m) => (h - startHour) * 60 + m
+
+          const top = (minutesFromStart(hs, hm) / stepMinutes) * ROW_H + HEADER_H
+          const height = ((minutesFromStart(he, em) - minutesFromStart(hs, hm)) / stepMinutes) * ROW_H
           const colIdx = days.indexOf(blk.dia)
           const left   = `calc(${TIME_W}px + ${colIdx}*${COL_W})`
           return (
@@ -67,8 +90,10 @@ export default function ScheduleGrid({
         {previewBlocks.map((blk,i) => {
           const [hs, hm] = blk.horaEntrada.split(':').map(Number)
           const [he, em] = blk.horaSalida.split(':').map(Number)
-          const top    = (hs-8)*ROW_H+HEADER_H
-          const height = ((he*60+em)-(hs*60+hm))/60*ROW_H
+          const minutesFromStart = (h, m) => (h - startHour) * 60 + m
+
+          const top = (minutesFromStart(hs, hm) / stepMinutes) * ROW_H + HEADER_H
+          const height = ((minutesFromStart(he, em) - minutesFromStart(hs, hm)) / stepMinutes) * ROW_H
           const colIdx = days.indexOf(blk.dia)
           const left   = `calc(${TIME_W}px + ${colIdx}*${COL_W})`
           return (

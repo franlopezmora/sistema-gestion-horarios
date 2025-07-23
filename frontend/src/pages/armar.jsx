@@ -88,15 +88,30 @@ export default function Armar() {
           comisionId:  c.comisionId,
           materiaId:   c.materiaId,
           disabled:    isChocante(c.horarios),
-          render: (
-            <div style={{ padding: 4, fontSize: '0.78rem' }}>
-              <strong>{
-                allMaterias.find(m => m.id === c.materiaId).nombre
-              }</strong><br/>
-              Nivel {allMaterias.find(m => m.id === c.materiaId).nivel}
-              &nbsp;{c.carrera}&nbsp;Sección {c.seccion}
-            </div>
-          )
+render: (
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+    padding: '4px',
+    fontSize: '0.78rem'
+  }}>
+    <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
+      {h.horaEntrada}
+    </div>
+    <div style={{ textAlign: 'center' }}>
+      <strong>{allMaterias.find(m => m.id === c.materiaId).nombre}</strong><br/>
+      Nivel {allMaterias.find(m => m.id === c.materiaId).nivel}
+      &nbsp;{c.carrera}&nbsp;Sección {c.seccion}
+    </div>
+    {/* Hora de fin (abajo a la izquierda) */}
+    <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
+      {h.horaSalida}
+    </div>
+  </div>
+)
+
         }))
       )
   }, [previewMateriaId, comisiones, allMaterias, fixedBlocks])
@@ -132,7 +147,7 @@ export default function Armar() {
       </Row>
 
       <Row>
-        <Col xs={12} lg={12} style={{ position: 'relative', width: '100%' }}>
+        <Col xs={12} lg={9} style={{ position: 'relative' }}>
           <ScheduleGrid
             fixedBlocks={fixedBlocks}
             previewBlocks={previewBlocks}

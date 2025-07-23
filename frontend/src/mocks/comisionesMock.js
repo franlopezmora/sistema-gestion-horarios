@@ -106,7 +106,7 @@ export const comisionesMock = [
     periodo: 1,
     horarios: [
       { dia: "lunes",    horaEntrada: "08:00", horaSalida: "10:00" },
-      { dia: "miércoles",horaEntrada: "10:00", horaSalida: "12:00" },
+      { dia: "miércoles",horaEntrada: "10:00", horaSalida: "23:05" },
     ]
   },
   {
