@@ -1,0 +1,77 @@
+.schedule-grid-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Retícula */
+.grid.header,
+.grid.body {
+  display: grid;
+  grid-template-columns: 60px repeat(6, 1fr);
+  position: relative;
+  z-index: 1;
+}
+.grid.header {
+  height: 40px;
+  width: 80vw;
+  background: #008c9e;
+  color: white;
+  align-items: center;
+}
+.cell.day-header {
+  text-align: center;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.cell.time-header,
+.cell.time-label {
+  padding: 0;
+  padding-right: 30px;
+  text-align: right;
+  font-size: 0.85rem;
+}
+.grid.body {
+  grid-auto-rows: 60px;
+}
+.cell.slot {
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Overlay para bloques: absoluto sobre la retícula */
+.blocks-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* Bloques comunes */
+.block {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 0.75rem;
+  pointer-events: auto;
+}
+
+/* Bloques fijos */
+.block.fixed {
+  background: #008c9e;
+  color: white;
+  z-index: 2;
+}
+
+/* Bloques preview */
+.block.preview {
+  background: rgba(255,165,0,0.75);
+  color: white;
+  z-index: 2;
+  cursor: pointer;
+}
+.block.preview.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
