@@ -1,38 +1,50 @@
 .schedule-grid-container {
   position: relative;
-  width: 100%;
+  width: 100%;         /* ancho cómodo en desktop */
+  margin: 0 auto;       /* centrada */
 }
 
 /* Retícula */
 .grid.header,
 .grid.body {
   display: grid;
-  grid-template-columns: 60px repeat(6, 1fr);
+  grid-template-columns: 60px repeat(6, 1fr); /* 1 columna de horas + 6 días */
   position: relative;
   z-index: 1;
 }
+
 .grid.header {
   height: 40px;
-  width: 80vw;
   background: #008c9e;
   color: white;
   align-items: center;
 }
+
 .cell.day-header {
   text-align: center;
   font-weight: bold;
   text-transform: capitalize;
 }
-.cell.time-header,
-.cell.time-label {
-  padding: 0;
-  padding-right: 30px;
-  text-align: right;
-  font-size: 0.85rem;
+
+.cell.time-label,
+.cell.time-header {
+  display: flex;             /* usamos flex para centrar */
+  justify-content: center;   /* centrado horizontal */
+  align-items: center;       /* centrado vertical */
+  font-size: 1rem;
+  font-weight: bold;         /* negrita */
+  border-right: 1px solid rgba(0,0,0,0.1); /* separador opcional */
 }
+
+.hour-inner {
+  text-align: center;
+  width: 100%;   /* ocupa toda la celda */
+}
+
 .grid.body {
-  grid-auto-rows: 60px;
+  grid-auto-rows: auto; /* dejamos que la altura la controle el inline style */
 }
+
 .cell.slot {
   border: 1px solid rgba(0,0,0,0.1);
 }
@@ -74,4 +86,28 @@
 .block.preview.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+
+/* ====================== */
+/* 📱 RESPONSIVE AJUSTES  */
+/* ====================== */
+@media (max-width: 768px) {
+  .schedule-grid-container {
+    width: 100%;        /* usar todo el ancho en móvil */
+    margin: 0;          /* sin margen */
+    overflow-x: auto;   /* permitir scroll horizontal */
+  }
+
+  .grid.header,
+  .grid.body {
+    min-width: 600px;   /* asegura que las columnas tengan espacio mínimo */
+    grid-template-columns: 40px repeat(6, 1fr); /* horas más angostas */
+  }
+
+  .cell.time-label,
+  .cell.time-header,
+  .cell.day-header {
+    font-size: 0.8rem;  /* texto más chico en móvil */
+  }
 }

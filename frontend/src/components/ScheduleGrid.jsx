@@ -9,16 +9,22 @@ export default function ScheduleGrid({
   previewBlocks = [],
   onBlockClick
 }) {
-  const HEADER_H = 40
-  const TIME_W   = 60
-  const ROW_H    = 60
-  const COL_W    = `calc((100% - ${TIME_W}px)/6)`
+    const HEADER_H = 40;
+    const TIME_W = 60;
+    const hours = Array.from({ length: 16 }, (_, i) => 8 + i);
+
+    // calcula altura dinámica para que entre todo
+    const availableHeight = window.innerHeight - 150; // ajustá este margen según tu layout
+    const ROW_H = availableHeight / hours.length;
+    const COL_W = `calc((100% - ${TIME_W}px)/6)`;
 
   return (
     <div className="schedule-grid-container">
-      
+
       <div className="grid header">
-        <div className="cell time-header" style={{ width: TIME_W }} />
+          <div className="cell time-header" style={{ width: TIME_W }}>
+              <div className="hour-inner">Hora</div>
+          </div>
         {days.map(d => (
           <div key={d} className="cell day-header">
             {d.charAt(0).toUpperCase()+d.slice(1)}
@@ -26,11 +32,11 @@ export default function ScheduleGrid({
         ))}
       </div>
 
-     
+
       <div className="grid body">
         {hours.map(h => (
           <React.Fragment key={h}>
-            <div className="cell time-label" style={{ width: TIME_W }}>
+            <div className="cell time-label" style={{ width: TIME_W, height: ROW_H }}>
               {h}:00
             </div>
             {days.map(d => (
@@ -40,7 +46,7 @@ export default function ScheduleGrid({
         ))}
       </div>
 
-     
+
       <div className="blocks-overlay">
         {fixedBlocks.map((blk,i) => {
           const [hs, hm] = blk.horaEntrada.split(':').map(Number)

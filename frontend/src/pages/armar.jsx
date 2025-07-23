@@ -119,10 +119,10 @@ export default function Armar() {
 
   
   return (
-    <Container fluid className="py-3">
+    <Container fluid className="py-3" style={{ width: '100%' }}>
       <Row className="mb-2">
         <Col>
-          <h5>
+          <h5 style={{marginTop: '1rem'}}>
             Cuatrimestre:{" "}
             {selectedCuatri === 0
               ? "Anual"
@@ -132,8 +132,7 @@ export default function Armar() {
       </Row>
 
       <Row>
-  
-        <Col md={9} style={{ position: 'relative' }}>
+        <Col xs={12} lg={12} style={{ position: 'relative', width: '100%' }}>
           <ScheduleGrid
             fixedBlocks={fixedBlocks}
             previewBlocks={previewBlocks}
@@ -142,7 +141,7 @@ export default function Armar() {
         </Col>
 
       
-        <Col md={3}>
+        <Col xs={12} lg={3}>
           <h5>Materias</h5>
           {selectedMaterias.map(m => {
             const yaFijada = fixedBlocks.some(b => b.materiaId === m.id)
