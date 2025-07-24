@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Form,
@@ -12,18 +12,58 @@ import {
   InputGroup,
   ButtonGroup
 } from "react-bootstrap";
-import { materiasMock } from "../mocks/materiasMocks";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
   const [selectedCuatri, setSelectedCuatri] = useState(null);
+  const [selectedCarreraId, setSelectedCarreraId] = useState("");
+  const [materias, setMaterias] = useState([]);
+  const [carreras, setCarreras] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  
   const navigate = useNavigate();
 
-  // 🔥 Cambia esto cuando uses tu hook real
-  const materias = materiasMock;
-  const isLoading = false;
-  const isError = false;
+  // 🔥 Cargar carreras al montar
+  useEffect(() => {
+    fetch("http://localhost:8080/api/carreras")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener carreras");
+        return res.json();
+      })
+      .then((data) => setCarreras(data))
+      .catch((err) => {
+        console.error(err);
+        setIsError(true);
+      });
+  }, []);
+
+
+  // 🔥 Cargar materias cuando haya carrera y cuatrimestre seleccionados
+  useEffect(() => {
+    if (!selectedCuatri || !selectedCarreraId) {
+      setMaterias([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setIsError(false);
+
+    fetch(
+      `http://localhost:8080/api/materias/filtrar?carreraId=${selectedCarreraId}&periodoId=${selectedCuatri}`
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener materias");
+        return res.json();
+      })
+      .then((data) => setMaterias(data))
+      .catch((err) => {
+        console.error(err);
+        setIsError(true);
+      })
+      .finally(() => setIsLoading(false));
+  }, [selectedCuatri, selectedCarreraId]);
 
   // 🔎 Filtrar materias en base al término de búsqueda
   const filteredMaterias = useMemo(() => {
@@ -66,6 +106,24 @@ export default function Home() {
       <Container className="py-4">
         <h1 className="mb-3">🎓 Bienvenido a Cruma</h1>
         <h2 className="mb-4">Selecciona las materias que vas a cursar</h2>
+
+        {/* Selector de carrera */}
+        <Form.Group className="mb-3" controlId="carreraSelect" style={{padding: "10px"}}>
+          <Form.Label style={{paddingRight: "10px"}}>Carrera</Form.Label>
+          <Form.Select
+            value={selectedCarreraId}
+            onChange={(e) => setSelectedCarreraId(e.target.value)}
+            style={{width: "300px", height: "30px", textAlign: "center"}}
+          >
+            <option value="">-- Seleccioná una carrera --</option>
+            {carreras.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.codigo} – {c.nombre}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
 
         {isLoading && <Spinner animation="border" />}
         {isError && <Alert variant="danger">⚠️ Error cargando materias</Alert>}
@@ -135,7 +193,7 @@ export default function Home() {
                                   key={m.id}
                                   type="checkbox"
                                   id={`materia-${m.id}`}
-                                  label={`${m.codigo} – ${m.nombre} (Nivel ${m.nivel})`}
+                                  label={`${m.codigo} – ${m.nombre} (Año ${m.anioCarrera})`}
                                   value={m.id}
                                   checked={selectedIds.includes(m.id)}
                                   onChange={handleCheck}

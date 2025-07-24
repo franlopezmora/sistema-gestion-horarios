@@ -76,8 +76,21 @@ export default function ScheduleGrid({
 
           const top = (minutesFromStart(hs, hm) / stepMinutes) * ROW_H + HEADER_H
           const height = ((minutesFromStart(he, em) - minutesFromStart(hs, hm)) / stepMinutes) * ROW_H
-          const colIdx = days.indexOf(blk.dia)
-          const left   = `calc(${TIME_W}px + ${colIdx}*${COL_W})`
+
+          
+          // Mapear el número de día a índice de columna
+          const diaIndexMap = {
+            '1': 0, // lunes
+            '2': 1, // martes
+            '3': 2, // miércoles
+            '4': 3, // jueves
+            '5': 4, // viernes
+            '6': 5  // sábado
+          };
+
+          const colIdx = diaIndexMap[String(blk.dia)] ?? 0;
+          const left = `calc(${TIME_W}px + ${colIdx} * ${COL_W})`;
+
           return (
             <div
               key={i}
@@ -94,8 +107,16 @@ export default function ScheduleGrid({
 
           const top = (minutesFromStart(hs, hm) / stepMinutes) * ROW_H + HEADER_H
           const height = ((minutesFromStart(he, em) - minutesFromStart(hs, hm)) / stepMinutes) * ROW_H
-          const colIdx = days.indexOf(blk.dia)
-          const left   = `calc(${TIME_W}px + ${colIdx}*${COL_W})`
+          const diaIndexMap = {
+            '1': 0, // lunes
+            '2': 1, // martes
+            '3': 2, // miércoles
+            '4': 3, // jueves
+            '5': 4, // viernes
+            '6': 5  // sábado
+          };
+          const colIdx = diaIndexMap[String(blk.dia)] ?? 0;
+          const left   = `calc(${TIME_W}px + ${colIdx} * ${COL_W})`;
           return (
             <div
               key={i}
