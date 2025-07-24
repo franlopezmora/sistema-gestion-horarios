@@ -60,10 +60,14 @@ public class ComisionService {
                             })
                             .collect(Collectors.toList());
 
+                    Integer periodo = cm.getPeriodo().getId();
+
                     return new ComisionInfoDTO(
+                            c.getId(),
+                            cm.getMateria().getId(),
                             c.getSeccion(),
                             c.getCarrera().getNombre(),
-                            cm.getPeriodo().getDescripcion(),
+                            periodo,
                             hs
                     );
                 })

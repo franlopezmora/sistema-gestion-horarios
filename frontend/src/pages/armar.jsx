@@ -1,10 +1,7 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Button, Spinner, Alert } from 'react-bootstrap'
-import ScheduleGrid from '../components/ScheduleGrid'
-
-import { materiasMock }  from '../mocks/materiasMocks'
-import { comisionesMock } from '../mocks/comisionesMock'
+ import React, { useEffect, useState, useMemo } from 'react'
+ import { useLocation, useNavigate } from 'react-router-dom'
+ import { Container, Row, Col, Button, Spinner, Alert } from 'react-bootstrap'
+ import ScheduleGrid from '../components/ScheduleGrid'
 
 export default function Armar() {
   const navigate = useNavigate()
@@ -15,26 +12,16 @@ export default function Armar() {
     return q.split(',').map(Number).filter(Boolean)
   }, [search])
 
-
   const selectedCuatri = useMemo(() => {
     const c = new URLSearchParams(search).get('cuatri')
     return c == null ? 0 : Number(c)
   }, [search])
 
-
-  useEffect(() => {
-    if (materiaIds.length === 0) {
-      navigate('/', { replace: true })
-    }
-  }, [materiaIds, navigate])
-
-  if (!materiaIds.length) return null
-
-
-  const allMaterias = materiasMock
-  const allComisiones = comisionesMock.filter(c =>
-    materiaIds.includes(c.materiaId)
-  )
+  // ➡️ Estados
+  const [allMaterias, setAllMaterias] = useState([]);
+  const [allComisiones, setAllComisiones] = useState([]);
+  const [previewMateriaId, setPreviewMateriaId] = useState(null);
+  const [fixedBlocks, setFixedBlocks] = useState([]);
 
 
   const comisiones = useMemo(() =>
@@ -42,17 +29,48 @@ export default function Armar() {
       c.periodo === 0 || c.periodo === selectedCuatri
     ),
     [allComisiones, selectedCuatri]
-  )
+  );
 
-  
+  // 🔥 Redirigir si no hay materias seleccionadas
+  useEffect(() => {
+    if (materiaIds.length === 0) {
+      navigate("/", { replace: true });
+    }
+  }, [materiaIds, navigate]);
+
+  useEffect(() => {
+    if (materiaIds.length > 0) {
+      const params = materiaIds.join(',');
+      fetch(`http://localhost:8080/api/materias/seleccionadas?ids=${params}`)
+        .then(res => res.json())
+        .then(data => setAllMaterias(data))
+        .catch(err => console.error("Error cargando materias seleccionadas:", err));
+    }
+  }, [materiaIds]);
+
   const selectedMaterias = useMemo(
     () => allMaterias.filter(m => materiaIds.includes(m.id)),
     [allMaterias, materiaIds]
-  )
+  );
 
-
-  const [previewMateriaId, setPreviewMateriaId] = useState(null)
-  const [fixedBlocks, setFixedBlocks]= useState([])
+  useEffect(() => {
+    const fetchComisiones = async () => {
+      try {
+        const comisionesAcumuladas = [];
+        for (let materiaId of materiaIds) {
+          const res = await fetch(
+            `http://localhost:8080/api/materias/${materiaId}/comisiones`
+          );
+          const data = await res.json();
+          comisionesAcumuladas.push(...data);
+        }
+        setAllComisiones(comisionesAcumuladas);
+      } catch (err) {
+        console.error("Error cargando comisiones:", err);
+      }
+    };
+    if (materiaIds.length > 0) fetchComisiones();
+  }, [materiaIds]);
 
 
   const toMin = hora => {
@@ -75,64 +93,100 @@ export default function Armar() {
     })
   }
 
+  const ordenarHorarios = (horarios) => {
+    return [...horarios].sort((a, b) => {
+      if (Number(a.dia) !== Number(b.dia)) {
+        return Number(a.dia) - Number(b.dia);
+      }
+      const [ha, ma] = a.horaEntrada.split(':').map(Number);
+      const [hb, mb] = b.horaEntrada.split(':').map(Number);
+      return (ha * 60 + ma) - (hb * 60 + mb);
+    });
+  };
 
-  const previewBlocks = useMemo(() => {
-    if (!previewMateriaId) return []
-    return comisiones
-      .filter(c => c.materiaId === previewMateriaId)
-      .flatMap(c =>
-        c.horarios.map(h => ({
-          dia:         h.dia,
-          horaEntrada: h.horaEntrada,
-          horaSalida:  h.horaSalida,
-          comisionId:  c.comisionId,
-          materiaId:   c.materiaId,
-          disabled:    isChocante(c.horarios),
-render: (
-  <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-    padding: '4px',
-    fontSize: '0.78rem'
-  }}>
-    <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
-      {h.horaEntrada}
+const previewBlocks = useMemo(() => {
+  if (!previewMateriaId) return [];
+  return comisiones
+    .filter(c => c.materiaId === previewMateriaId)
+    .flatMap(c =>
+      ordenarHorarios(c.horarios).map(h => ({
+        dia: h.dia,
+        horaEntrada: h.horaEntrada,
+        horaSalida: h.horaSalida,
+        comisionId: c.comisionId,
+        materiaId: c.materiaId,
+        disabled: isChocante(c.horarios),
+        render: (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '100%',
+            padding: '4px',
+            fontSize: '0.78rem'
+          }}>
+            <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
+              {h.horaEntrada}
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <strong>{allMaterias.find(m => m.id === c.materiaId)?.nombre}</strong><br />
+              Sección {c.seccion}
+            </div>
+            <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
+              {h.horaSalida}
+            </div>
+          </div>
+        )
+      }))
+    );
+}, [previewMateriaId, comisiones, allMaterias, fixedBlocks]);
+
+
+const onBlockSelect = (blk) => {
+  const com = comisiones.find(
+    c => c.comisionId === blk.comisionId && c.materiaId === blk.materiaId
+  );
+  if (!com) return;
+
+  console.log('✅ Fijando comisión', com.seccion, com.materiaId, com.horarios);
+
+const nuevosFijos = com.horarios.map(h => ({
+  dia: h.dia,
+  horaEntrada: h.horaEntrada,
+  horaSalida: h.horaSalida,
+  materiaId: com.materiaId,
+  comisionId: com.comisionId,
+  render: (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: '100%',
+      padding: '4px',
+      fontSize: '0.78rem'
+    }}>
+      <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
+        {h.horaEntrada}
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <strong>{allMaterias.find(m => m.id === com.materiaId)?.nombre}</strong><br/>
+        Sección {com.seccion}
+      </div>
+      <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
+        {h.horaSalida}
+      </div>
     </div>
-    <div style={{ textAlign: 'center' }}>
-      <strong>{allMaterias.find(m => m.id === c.materiaId).nombre}</strong><br/>
-      Nivel {allMaterias.find(m => m.id === c.materiaId).nivel}
-      &nbsp;{c.carrera}&nbsp;Sección {c.seccion}
-    </div>
-    {/* Hora de fin (abajo a la izquierda) */}
-    <div style={{ textAlign: 'left', fontWeight: 'bold' }}>
-      {h.horaSalida}
-    </div>
-  </div>
-)
-
-        }))
-      )
-  }, [previewMateriaId, comisiones, allMaterias, fixedBlocks])
+  )
+}));
 
 
-  const onBlockSelect = blk => {
-    const com = allComisiones.find(c => c.comisionId === blk.comisionId)
-    if (!com) return
-    const nuevosFijos = com.horarios.map(h => ({
-      dia:         h.dia,
-      horaEntrada: h.horaEntrada,
-      horaSalida:  h.horaSalida,
-      materiaId:   com.materiaId,
-      comisionId:  com.comisionId,
-      render:      blk.render
-    }))
-    setFixedBlocks(prev => [...prev, ...nuevosFijos])
-    setPreviewMateriaId(null)
-  }
+  setFixedBlocks(prev => [...prev, ...nuevosFijos]);
+  setPreviewMateriaId(null);
+};
 
-  
+
+  if (!materiaIds.length) return null;
+
   return (
     <Container fluid className="py-3" style={{ width: '100%' }}>
       <Row className="mb-2">

@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/materias")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:5173")
 public class MateriaController {
 
     private final MateriaService service;
@@ -31,5 +31,10 @@ public class MateriaController {
             @RequestParam Integer carreraId,
             @RequestParam Integer periodoId) {
         return service.listarPorCarreraYPeriodo(carreraId, periodoId);
+    }
+
+    @GetMapping("/seleccionadas")
+    public List<MateriaDTO> getMateriasSeleccionadas(@RequestParam List<Integer> ids) {
+        return service.listarPorIds(ids);
     }
 }
