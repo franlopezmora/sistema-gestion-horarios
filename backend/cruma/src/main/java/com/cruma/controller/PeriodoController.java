@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/periodos")
-@CrossOrigin("http://localhost:3000")  // ajusta según tu front
+@CrossOrigin("http://localhost:5173")  // ajusta según tu front
 public class PeriodoController {
 
     private final PeriodoService service;

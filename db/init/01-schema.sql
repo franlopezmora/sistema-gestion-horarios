@@ -127,10 +127,13 @@ create table detalle_cronograma
     cronograma_id       integer                                            not null
         references cronograma,
     estado detalle_estado_enum NOT NULL DEFAULT 'SELECCIONABLE',
-    comision_materia_id integer                                            not null
-        references comision_materia
+    comision_materia_horario_id integer                                            not null
+        references comision_materia_horario
 );
 
 create index idx_dc_cronograma
     on detalle_cronograma (cronograma_id);
+
+CREATE INDEX idx_dc_cmh
+    on detalle_cronograma (comision_materia_horario_id);
 

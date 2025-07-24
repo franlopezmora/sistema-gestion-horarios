@@ -48,4 +48,10 @@ public class MateriaService {
                 m.getElectiva()
         );
     }
+
+    public List<MateriaDTO> listarPorIds(List<Integer> ids) {
+        return materiaRepo.findAllById(ids).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
 }

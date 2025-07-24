@@ -1,4 +1,4 @@
-id_materia;código;nombre;anio_carrera;electiva
+id_materia;cï¿½digo;nombre;anio_carrera;electiva
 1;AED;Algoritmos y Estructuras de Datos;1;false
 2;AM1;Analisis Matematico I;1;false
 3;ACO;Arquitectura de Computadoras;1;false
@@ -15,7 +15,7 @@ id_materia;código;nombre;anio_carrera;electiva
 14;ASI;Analisis de Sistemas de Informacion;2;false
 15;F2;Fisica II;2;false
 16;PPR;Paradigmas de Programacion;2;false
-17;DSI;Diseño de Sistemas de Informacion;3;false
+17;DSI;Diseï¿½o de Sistemas de Informacion;3;false
 18;COM;Comunicacion de Datos;3;false
 19;BDD;Base de Datos;3;false
 20;I2;Ingles II;3;false
@@ -31,7 +31,7 @@ id_materia;código;nombre;anio_carrera;electiva
 30;GI;Gestion Industrial de la Produccion;4;true
 31;GS;Green Software;4;true
 32;SIM;Simulacion;4;false
-33;TA;Tecnologias para la automatizacion;4;false
+33;TA;Tecnologias Para la Automatizacion;4;false
 34;DAO;Desarrollo de Aplicaciones con Objetos;4;true
 35;ICW;Ingenieria y Calidad de Software;4;false
 36;LEG;Legislacion;4;false
